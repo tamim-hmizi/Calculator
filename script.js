@@ -1,14 +1,14 @@
 const add = (a, b) => {
-  return a + b;
+  return parseFloat(a + b);
 };
 const substract = (a, b) => {
-  return a - b;
+  return parseFloat(a - b);
 };
 const multiply = (a, b) => {
-  return a * b;
+  return parseFloat(a * b);
 };
 const divide = (a, b) => {
-  return a / b;
+  return parseFloat(a / b);
 };
 const operate = (a, b, oper) => {
   switch (oper) {
@@ -38,19 +38,17 @@ let operator = "";
 let value2 = "";
 let result = 0;
 
-const nubmers = document.querySelectorAll(".nb");
-for (let i = 0; i < nubmers.length; i++) {
-  nubmers[i].addEventListener("click", (e) => {
+const numbers = document.querySelectorAll(".nb");
+for (let i = 0; i < numbers.length; i++) {
+  numbers[i].addEventListener("click", (e) => {
     if (operator == "") {
       if (value1 == result.toString()) value1 = "";
       value1 += e.target.textContent;
       display.textContent = value1;
-      console.log("value 1 : " + value1);
     }
     if (operator != "") {
       value2 += e.target.textContent;
       display.textContent = value2;
-      console.log("value 2 : " + value2);
     }
   });
 }
@@ -60,7 +58,7 @@ for (let i = 0; i < opes.length; i++) {
   opes[i].addEventListener("click", (e) => {
     operator = e.target.textContent;
     display.textContent = operator;
-    console.log("operator : " + operator);
+    point.removeAttribute("disabled");
   });
 }
 
@@ -71,21 +69,22 @@ equal.addEventListener("click", () => {
     value1 = "";
     value2 = "";
     operator = "";
+    point.removeAttribute("disabled");
   } else {
-    if(operator=="/"&&value2=="0"){
+    if (operator == "/" && value2 == "0") {
       display.textContent = "ERRER";
       value1 = "";
       value2 = "";
       operator = "";
-    }else{
-    result = Number(
-      operate(parseInt(value1), parseInt(value2), operator).toFixed(5)
-    );
-    display.textContent = result;
-    value1 = result.toString();
-    value2 = "";
-    operator = "";
-    console.log("resultat : " + result);
+      point.removeAttribute("disabled");
+    } else {
+      result = Number(
+        operate(parseFloat(value1), parseFloat(value2), operator).toFixed(5)
+      );
+      display.textContent = result;
+      value1 = result.toString();
+      value2 = "";
+      operator = "";
     }
   }
 });
@@ -97,4 +96,45 @@ clear.addEventListener("click", () => {
   value2 = "";
   operator = "";
   result = 0;
+  point.removeAttribute("disabled");
+});
+
+const point = document.querySelector(".point");
+point.addEventListener("click", () => {
+  if (value1 != "" && !value1.includes(".") && operator == "") {
+    value1 += ".";
+    point.setAttribute("disabled", "true");
+    display.textContent = value1;
+  }
+  if (value2 != "" && !value2.includes(".") && operator != "") {
+    value2 += ".";
+    point.setAttribute("disabled", "true");
+    display.textContent = value2;
+  }
+});
+
+const backspace = document.querySelector(".backspace");
+backspace.addEventListener("click", () => {
+  if (operator == "" && value1 != "") {
+    value1 = value1.slice(0, -1);
+    display.textContent = value1;
+  }
+  if (operator != "" && value2 != "") {
+    value2 = value2.slice(0, -1);
+    display.textContent = value2;
+  }
+});
+
+
+document.addEventListener("keydown", (e) => {
+  if (e.key == "=") equal.click();
+  if (e.key == "c") clear.click();
+  if (e.key == ".") point.click();
+  if (e.key == "b") backspace.click();
+  for(let i =0;i<numbers.length;i++){
+    if(numbers[i].textContent==e.key) numbers[i].click();
+  }
+  for(let i =0;i<opes.length;i++){
+    if(opes[i].textContent==e.key) opes[i].click();
+  }
 });
