@@ -1,7 +1,7 @@
 const add = (a, b) => {
   return parseFloat(a + b);
 };
-const substract = (a, b) => {
+const subtract = (a, b) => {
   return parseFloat(a - b);
 };
 const multiply = (a, b) => {
@@ -10,13 +10,13 @@ const multiply = (a, b) => {
 const divide = (a, b) => {
   return parseFloat(a / b);
 };
-const operate = (a, b, oper) => {
-  switch (oper) {
+const operate = (a, b, operation) => {
+  switch (operation) {
     case "+":
       return add(a, b);
 
     case "-":
-      return substract(a, b);
+      return subtract(a, b);
 
     case "*":
       return multiply(a, b);
@@ -25,7 +25,7 @@ const operate = (a, b, oper) => {
       return divide(a, b);
 
     default:
-      console.log("ERRER");
+      console.log("ERROR");
       break;
   }
 };
@@ -65,14 +65,14 @@ for (let i = 0; i < opes.length; i++) {
 const equal = document.querySelector(".equal");
 equal.addEventListener("click", () => {
   if (value1 == "" || value2 == "" || operator == "") {
-    display.textContent = "ERRER";
+    display.textContent = "ERROR";
     value1 = "";
     value2 = "";
     operator = "";
     point.removeAttribute("disabled");
   } else {
     if (operator == "/" && value2 == "0") {
-      display.textContent = "ERRER";
+      display.textContent = "ERROR";
       value1 = "";
       value2 = "";
       operator = "";
